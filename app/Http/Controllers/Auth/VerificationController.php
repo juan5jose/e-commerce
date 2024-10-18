@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\VerifiesEmails;
+use Illuminate\Http\Request;
 
 class VerificationController extends Controller
 {
@@ -25,7 +26,15 @@ class VerificationController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected function authenticated(Request $request, $user)
+    {
+
+        if ($user->role_id == 1) { // Comprador
+            return redirect()->route('catalogo');
+        } elseif ($user->role_id == 2) { // Vendedor
+            return redirect()->route('misProductos');
+        }
+    }
 
     /**
      * Create a new controller instance.

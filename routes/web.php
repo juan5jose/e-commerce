@@ -20,14 +20,14 @@ Auth::routes();
 
 Route::view('/', 'index')->name('home');
 
-Route::get('/misProductos', [ProductController::class, 'index'])->name('misProductos'); // Muestra solo los productos del usuario logueado
-Route::view('/misProductos/store', 'formProduc')->name('misProductos.store'); // Muestra solo los productos del usuario logueado
+Route::get('/misProductos', [ProductController::class, 'index'])->name('misProductos')->middleware('role:2'); // Muestra solo los productos del usuario logueado
+Route::view('/misProductos/store', 'formProduc')->name('misProductos.store')->middleware('role:2'); // Muestra solo los productos del usuario logueado
 
 // Ruta para gestionar los productos (CRUD completo)
-Route::resource('products', ProductController::class)->except(['index', 'destroy']); // Elimina 'index' para evitar conflicto con la ruta '/misProductos'
+Route::resource('products', ProductController::class)->except(['index', 'destroy'])->middleware('role:2'); // Elimina 'index' para evitar conflicto con la ruta '/misProductos'
 
 // Ruta para mostrar el catálogo de productos
-Route::get('/catalogo', [ProductController::class, 'catalogo'])->name('catalogo');
+Route::get('/catalogo', [ProductController::class, 'catalogo'])->name('catalogo')->middleware('role:1');;
 
 // FIN RUTA DE PRODUCTOS
 
@@ -35,13 +35,13 @@ Route::get('/catalogo', [ProductController::class, 'catalogo'])->name('catalogo'
 // RUTAS CARRITO
 
 // Ruta agregar productos carrito
-Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregarAlCarrito'])->name('carrito.agregar');
+Route::post('/carrito/agregar/{id}', [CarritoController::class, 'agregarAlCarrito'])->name('carrito.agregar')->middleware('role:1');;
 
 // Ruta ver carrito
-Route::get('/carrito', [CarritoController::class, 'verCarrito'])->name('carrito.ver');
+Route::get('/carrito', [CarritoController::class, 'verCarrito'])->name('carrito.ver')->middleware('role:1');;
 
 // Ruta eliminar producto carrito
-Route::post('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarDelCarrito'])->name('carrito.eliminar');
+Route::post('/carrito/eliminar/{id}', [CarritoController::class, 'eliminarDelCarrito'])->name('carrito.eliminar')->middleware('role:1');;
 
 // Ruta actualizar carrito
-Route::patch('/carrito/{id}/actualizar', [CarritoController::class, 'actualizar'])->name('carrito.actualizar');
+Route::patch('/carrito/{id}/actualizar', [CarritoController::class, 'actualizar'])->name('carrito.actualizar')->middleware('role:1');;
